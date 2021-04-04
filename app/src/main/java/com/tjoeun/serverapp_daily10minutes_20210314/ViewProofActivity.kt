@@ -35,6 +35,14 @@ class ViewProofActivity : BaseActivity() {
         setValues()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+//        자동 새로고침 구현
+        getProofListFromServer()
+
+    }
+
     override fun setupEvents() {
 
 //        인증글 작성 버튼 눌리면 => 어떤프로젝트를 인증하는지 => 작성화면으로 이동.
@@ -106,6 +114,9 @@ class ViewProofActivity : BaseActivity() {
 
                 val proofsArr = projectObj.getJSONArray("proofs")
 
+//                기존의 게시글을 싹 날리고 => 다시 새로 게시글을 목록에 추가.
+                mProofList.clear()
+
                 for (i  in  0 until proofsArr.length()) {
                     val proofObj = proofsArr.getJSONObject(i)
 
@@ -146,6 +157,8 @@ class ViewProofActivity : BaseActivity() {
 //        리스트뷰 / 어댑터 연결
         mProofAdapter = ProofAdapter(mContext, R.layout.proof_list_item, mProofList)
         proofListView.adapter = mProofAdapter
+
+//        조회 화면에 들어올때 마다 => 오늘 날짜의 게시글을 불러오자. (자동새로고침)
 
     }
 
